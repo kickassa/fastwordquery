@@ -474,7 +474,8 @@ class WebService(Service):
         """
         try:
             payload = self.net_stream(*args, **kwargs)
-            with open(path, 'wb') as f:
+            p = os.path.join(mw.pm.profileFolder(),'collection.media',path)            
+            with open(p, 'wb') as f:            
                 f.write(payload)
                 f.close()
             return True
