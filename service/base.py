@@ -789,11 +789,11 @@ class StardictService(LocalService):
 
 
 class QueryResult(MapDict):
-    """Query Result structure"""
+    # QueryResult is a subclass of MapDict
+    # Query Result structure
 
     def __init__(self, *args, **kwargs):
         super(QueryResult, self).__init__(*args, **kwargs)
-        # avoid return None
         if self['result'] is None:
             self['result'] = ""
 

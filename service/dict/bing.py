@@ -30,3 +30,6 @@ class Bing(WebService):
         if val == None or val == '':
             return ''
         return self._css(val)
+
+# A dictionary “provider” (web services) inside this Anki add-on
+# Exported field: fld_definition

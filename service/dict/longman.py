@@ -43,3 +43,6 @@ class Longman(WebService):
     @with_styles(cssfile='_longman.css')
     def fld_ee(self):
         return self._get_field('ee')
+
+# A dictionary “provider” (web services) inside this Anki add-on
+# Exported field: fld_ee 
