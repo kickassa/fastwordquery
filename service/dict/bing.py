@@ -8,17 +8,15 @@ class Bing(WebService):
         super(Bing, self).__init__()
 
     def _get_from_api(self):
-        data = self.get_response(u"http://cn.bing.com/dict/search?q={}".format(self.quote_word))
+        data = self.get_response(u"https://cn.bing.com/dict/search?q={}".format(self.quote_word))
         soup = parse_html(data)
         result = {
-            'def': [],
+            'def': u'',
         }
 
         element = soup.find('div', class_='qdef')
         if element:
-            element = getattr(element, 'ul', '')
-            if element:
-                result['def'] = u''.join([str(content) for content in element.contents])
+            result['def'] = str(element)
 
         return self.cache_this(result)
 
