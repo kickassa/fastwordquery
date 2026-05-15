@@ -14,7 +14,6 @@ class Bing(WebService):
             'def': [],
         }
 
-        #释义
         element = soup.find('div', class_='qdef')
         if element:
             element = getattr(element, 'ul', '')
