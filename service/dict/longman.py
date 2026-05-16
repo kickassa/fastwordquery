@@ -23,7 +23,7 @@ class Longman(WebService):
         url = 'https://www.ldoceonline.com/dictionary/{}'.format(self.word)
         data = self.get_response(url)
         soup = parse_html(data)
-        dictionary_div = soup.find('div', {'class': 'dictionary'})
+        dictionary_div = soup.select_one('div[class="dictionary"]')
         # <div class="dictionary">
         if not dictionary_div:
             raise ValueError('Longman: dictionary container not found: {}'.format(url))
@@ -46,4 +46,4 @@ class Longman(WebService):
         return self._get_field('ee')
 
 # A dictionary “provider” (web services) inside this Anki add-on
-# Exported field: fld_ee 
+# Exported field: fld_ee
