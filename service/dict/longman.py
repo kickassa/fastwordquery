@@ -40,7 +40,6 @@ class Longman(WebService):
         return self.cache_this(word_info)
 
     @export('DEF')
-    @with_styles(cssfile='_longman.css')
     def fld_ee(self):
         return self._get_field('ee')
 

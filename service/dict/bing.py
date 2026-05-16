@@ -19,17 +19,10 @@ class Bing(WebService):
             result['def'] = str(element)
 
         return self.cache_this(result)
-
-    @with_styles(css='.pos{font-weight:bold;margin-right:4px;}', need_wrap_css=True, wrap_class='bing')
-    def _css(self, val):
-        return val
     
     @export('DEF')
     def fld_definition(self):
-        val = self._get_field('def')
-        if val == None or val == '':
-            return ''
-        return self._css(val)
+        return self._get_field('def') or ''
 
 # A dictionary “provider” (web services) inside this Anki add-on
 # Exported field: fld_definition
