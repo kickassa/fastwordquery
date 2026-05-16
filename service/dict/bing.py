@@ -1,4 +1,5 @@
 #-*- coding:utf-8 -*-
+import io
 import os
 import re
 
@@ -16,23 +17,33 @@ class Bing(WebService):
         super(Bing, self).__init__()
 
     def _get_from_api(self):
-        url = u"https://cn.bing.com/dict/search?q={}".format(self.quote_word)
+        url = u"https://cn.bing.com/dict/search?q={}".format(self.word)
         data = self.get_response(url)
         soup = parse_html(data)
         
-        element = soup.find('div', class_='qdef')
+        # <div class="qdef">
+        element = soup.find('div', {'class': 'qdef'})
         if not element:
+            # Save full page for debugging so we can inspect the actual DOM
+            try:
+                filename_full = 'dictionary_bing_full_{}.html'.format(_safe_filename_component(self.word))
+                export_path_full = os.path.join(os.path.expanduser('~'), filename_full)
+                with io.open(export_path_full, 'w', encoding='utf-8') as f:
+                    f.write(str(soup))
+                print('Bing: full page saved to {}'.format(export_path_full))
+            except Exception as e:
+                print('Bing: failed to save full page: {}'.format(e))
             raise ValueError('Bing: definition container not found: {}'.format(url))
-        
+
         body_html = str(element)
 
         try:
-            filename = 'dictionary_bing_{}.html'.format(_safe_filename_component(self.quote_word))
+            filename = 'dictionary_bing_{}.html'.format(_safe_filename_component(self.word))
             export_path = os.path.join(os.path.expanduser('~'), filename)
-            with open(export_path, 'w', encoding='utf-8') as f:
+            with io.open(export_path, 'w', encoding='utf-8') as f:
                 f.write(body_html)
-        except Exception:
-            pass
+        except Exception as e:
+            print('Bing: export failed for {}: {}'.format(export_path, e))
 
         result = {
             'ee': body_html,
