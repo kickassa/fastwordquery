@@ -8,21 +8,23 @@ class Bing(WebService):
         super(Bing, self).__init__()
 
     def _get_from_api(self):
-        data = self.get_response(u"https://cn.bing.com/dict/search?q={}".format(self.quote_word))
+        url = u"https://cn.bing.com/dict/search?q={}".format(self.quote_word)
+        data = self.get_response(url)
         soup = parse_html(data)
-        result = {
-            'def': u'',
-        }
-
+        
         element = soup.find('div', class_='qdef')
-        if element:
-            result['def'] = str(element)
+        if not element:
+            raise ValueError('Bing: definition container not found: {}'.format(url))
+        
+        result = {
+            'ee': str(element),
+        }
 
         return self.cache_this(result)
     
     @export('DEF')
     def fld_definition(self):
-        return self._get_field('def') or ''
+        return self._get_field('ee')
 
 # A dictionary “provider” (web services) inside this Anki add-on
 # Exported field: fld_definition
