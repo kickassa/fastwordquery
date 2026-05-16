@@ -1,5 +1,13 @@
 #-*- coding:utf-8 -*-
+import os
+import re
+
 from ..base import *
+
+
+def _safe_filename_component(value: str) -> str:
+    return re.sub(r'[^A-Za-z0-9._-]+', '_', value).strip('_')
+
 
 @register([u'Bing', u'Bing'])
 class Bing(WebService):
@@ -16,8 +24,18 @@ class Bing(WebService):
         if not element:
             raise ValueError('Bing: definition container not found: {}'.format(url))
         
+        body_html = str(element)
+
+        try:
+            filename = 'dictionary_bing_{}.html'.format(_safe_filename_component(self.quote_word))
+            export_path = os.path.join(os.path.expanduser('~'), filename)
+            with open(export_path, 'w', encoding='utf-8') as f:
+                f.write(body_html)
+        except Exception:
+            pass
+
         result = {
-            'ee': str(element),
+            'ee': body_html,
         }
 
         return self.cache_this(result)
