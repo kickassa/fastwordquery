@@ -10,14 +10,14 @@ def _safe_filename_component(value: str) -> str:
     return re.sub(r'[^A-Za-z0-9._-]+', '_', value).strip('_')
 
 
-@register([u'Bing', u'Bing'])
+@register(['Bing', 'Bing'])
 class Bing(WebService):
 
     def __init__(self):
         super(Bing, self).__init__()
 
     def _get_from_api(self):
-        url = u"https://cn.bing.com/dict/search?q={}".format(self.word)
+        url = "https://cn.bing.com/dict/search?q={}".format(self.word)
         data = self.get_response(url)
         soup = parse_html(data)
         

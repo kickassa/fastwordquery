@@ -20,7 +20,7 @@ class Longman(WebService):
         super(Longman, self).__init__()
 
     def _get_from_api(self):
-        url = 'https://www.ldoceonline.com/dictionary/{}'.format(format_multi_query_word(self.quote_word))
+        url = 'https://www.ldoceonline.com/dictionary/{}'.format(self.word)
         data = self.get_response(url)
         soup = parse_html(data)
         dictionary_div = soup.find('div', {'class': 'dictionary'})
